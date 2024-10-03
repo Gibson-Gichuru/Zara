@@ -16,7 +16,8 @@ int main() {
 
     /*This just testing the symbol table for now :) using an array to store symbols just for
     simplification. this should work when we start working with a symbol table to implement the analysis phase
-    of this language*/
+    of this language
+    */
 
     SymbolTable table;
     Initialize(&table);
