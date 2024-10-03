@@ -16,12 +16,12 @@ This project covers both **analysis** (breaking down Zara code into meaningful c
 1. **Lexical Analysis (Current Phase)**:
    - The **Lexical Analyzer** (scanner) reads Zara code and breaks it into **tokens** such as keywords, operators, literals, identifiers, and data types.
    - Uses **regular expressions** to identify tokens and handle them as input for the next phase.
-   
+
    [Learn more about the lexical analyzer in the "Lexical Analyzer" section below.]
 
 2. **Syntax Analysis (Next Phase)**:
    - The **Parser** will check the sequence of tokens against Zara’s grammar to determine whether the syntax is valid. This will involve creating a **parse tree** or **abstract syntax tree (AST)**.
-   
+
 3. **Semantic Analysis**:
    - Ensures that Zara code is logically consistent. It will use the **symbol table** to check that variables are declared before use, type consistency in expressions, etc.
 
@@ -71,7 +71,7 @@ In the current phase, we’ve implemented a **Lexical Analyzer** for Zara. It br
      gcc src/lexical_analyzer.c -o lexical_analyzer -lm
      ./lexical_analyzer
      ```
-   
+
    - It will print out the recognized tokens along with their type:
      ```
      DataType: int
