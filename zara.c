@@ -2,39 +2,66 @@
 #include <stdlib.h>
 #include <string.h>
 #include "symbol.h"
+#include "parser.h"
 
-void printTable(SymbolTable* table) {
-    printf("Symbol Table: \n");
+#define MAX_BUFFER_SIZE 4096 
 
-    for(int i = 0; i < table->count; i++) {
-        printf("Name: %s, Type: %d\n", table->symbols[i].name, table->symbols[i].type);
+
+char * ReadFileToString(const char* filename) {
+
+    FILE* file = fopen(filename, "r");
+
+    if (file == NULL) {
+        perror("Error opening file");
+        exit(EXIT_FAILURE);
     }
+
+    char* content = (char*)malloc(MAX_BUFFER_SIZE);
+
+    if(content == NULL) {
+        perror("Error allocating memory");
+        exit(EXIT_FAILURE);
+    }
+
+    content[0] = '\0';
+
+    char line[256];
+
+    while(fgets(line, sizeof(line), file)) {
+        strncat(content, line, MAX_BUFFER_SIZE - strlen(content) - 1);
+    }
+
+    fclose(file);
+
+    return content;
 }
 
 
-int main() {
+/**
+ * @brief Entry point of the Zara compiler
+ *
+ * This function is the entry point of the compiler. It should be responsible for
+ * parsing the command line arguments, initializing the lexer, parser, and symbol
+ * table, and driving the compilation process.
+ */
+int main(int argc, char* argv[]) {
 
-    /*This just testing the symbol table for now :) using an array to store symbols just for
-    simplification. this should work when we start working with a symbol table to implement the analysis phase
-    of this language
-    */
-
-    SymbolTable table;
-    Initialize(&table);
-
-    AddSymbol(&table, "x", INTEGER);
-    AddSymbol(&table, "y", FLOAT);
-    AddSymbol(&table, "z", STRING);
-
-    printTable(&table);
-
-    UpdateSymbolValue(&table, "x", 10);
-
-    Symbol* sym = LookUpSymbol(&table, "x");
-    if(sym != NULL) {
-
-        printf("Value: %d\n", sym->value.intValue);
+    if(argc != 2) {
+        printf("Usage: %s <source file>\n", argv[0]);
+        exit(EXIT_FAILURE);
     }
+
+    char* code = ReadFileToString(argv[1]);
+
+    if(code == NULL) {
+        perror("Error reading file");
+        exit(EXIT_FAILURE);
+    }
+    Parser parser = InitParser(code);
+    ParseProgram(&parser);
+
+    printf("\nFinal Symbol Table:\n");
+    DisplayTable(&parser.symbolTable);
 
     return 0;
 }

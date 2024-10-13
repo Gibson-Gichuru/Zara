@@ -81,10 +81,77 @@ In the current phase, we’ve implemented a **Lexical Analyzer** for Zara. It br
      Operator: ;
      ```
 
-### Next Steps
-- **Implement Syntax Analyzer**: Develop the parser to construct a parse tree and validate Zara's syntax.
-- **Build the Symbol Table**: Manage variable and method declarations as part of the semantic analysis phase.
-- **Complete all phases**: Move on to intermediate code generation, optimization, and final code generation.
+### Gramma Defination
+For this language implementation we will extend Backus-NaurForm to define simplified grammar 
+for Zara  forcusing on Expressions, control structures and sub programs
+
+#### Defination
+```ebnf
+<program>       ::= { <function> }
+
+<function>      ::= <type> <identifier> "(" [ <parameters> ] ")" "{" { <statement> } "}"
+
+<parameters>    ::= <parameter> { "," <parameter> }
+
+<parameter>     ::= <type> <identifier>
+
+<statement>     ::= <declaration>
+                 | <assignment>
+                 | <if_statement>
+                 | <for_loop>
+                 | <do_while_loop>
+                 | <function_call>
+                 | <return_statement>
+                 | "{" { <statement> } "}"
+
+<declaration>   ::= <type> <identifier> [ "=" <expression> ] ";"
+
+<assignment>    ::= <identifier> "=" <expression> ";"
+
+<if_statement>  ::= "if" "(" <expression> ")" <statement> [ "else" <statement> ]
+
+<for_loop>      ::= "for" "(" [ <declaration> | <assignment> ] ";" [ <expression> ] ";" [ <assignment> ] ")" <statement>
+
+<do_while_loop> ::= "do" <statement> "while" "(" <expression> ")" ";"
+
+<function_call> ::= <identifier> "(" [ <arguments> ] ")" ";"
+
+<arguments>     ::= <expression> { "," <expression> }
+
+<return_statement> ::= "return" [ <expression> ] ";"
+
+<expression>    ::= <term> { ( "+" | "-" ) <term> }
+
+<term>          ::= <factor> { ( "*" | "/" | "%" ) <factor> }
+
+<factor>        ::= "(" <expression> ")"
+                 | <identifier>
+                 | <literal>
+
+<literal>       ::= <integer_literal>
+                 | <float_literal>
+                 | <string_literal>
+                 | <boolean_literal>
+
+<type>          ::= "int" | "float" | "string" | "array" | "stack"
+
+<identifier>    ::= <letter> { <letter> | <digit> | "_" }
+
+<integer_literal> ::= <digit> { <digit> }
+
+<float_literal> ::= <digit> { <digit> } "." <digit> { <digit> }
+
+<string_literal> ::= "\"" { <any_character_except_quote> } "\""
+
+<boolean_literal> ::= "true" | "false"
+```
+
+#### Notes
+**Types** int, float, string, array, stack  
+
+**Control Structures** if-else, for, do-while  
+**Sub-Programs** Functions with parameters and return statements  
+**Expressions**  Support arithmentic (+, -, *, /, %) and comparisons
 
 ### Contribution
 This is a learning project in compiler construction. Contributions to extend its functionality and optimize the compiler are welcome. Please open issues or submit pull requests for improvements.
