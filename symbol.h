@@ -1,5 +1,10 @@
 #ifndef symbol_h
 #define symbol_h
+
+#define MAX_SYMBOLS 1000
+#define MAX_NAME_LENGTH 100
+#define MAX_ARRAY_LENGTH 100
+
 typedef enum {
     INTEGER,
     FLOAT,
@@ -11,13 +16,14 @@ typedef enum {
 typedef struct 
 {
     /* data */
-    char name[100];
+    char name[MAX_NAME_LENGTH];
     DataType type;
     union 
     {
         int intValue;
         float floatValue;
-        char stringValue[100];
+        char stringValue[MAX_NAME_LENGTH];
+        int intArray[MAX_ARRAY_LENGTH];
     } value;
     
 } Symbol;
@@ -28,12 +34,14 @@ typedef struct {
 } SymbolTable;
 
 
-void Initialize(SymbolTable* table);
+void InitSymbolTable(SymbolTable* table);
 
-void AddSymbol(SymbolTable* table, char* name, DataType type);
+int AddSymbol(SymbolTable* table, char* name, DataType type, void* value);
 
-Symbol* LookUpSymbol(SymbolTable* table, char* name);
+Symbol* LookUpSymbol(SymbolTable* table, const char* name);
 
-void UpdateSymbolValue(SymbolTable* table, char* name, int intValue);
+int UpdateSymbolValue(SymbolTable* table, char* name, void* value);
+
+void DisplayTable(SymbolTable* table);
 
 #endif
